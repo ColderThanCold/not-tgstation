@@ -212,4 +212,7 @@
 	/// Used for tracking last uses of emotes for cooldown purposes
 	var/list/emotes_used
 
+    ///Currently possesses a typing indicator icon
+	var/typing_indicator = FALSE
+
 	vis_flags = VIS_INHERIT_PLANE //when this be added to vis_contents of something it inherit something.plane, important for visualisation of mob in openspace.
