@@ -32,13 +32,13 @@
 			locked = SEND_SIGNAL(src, COMSIG_IS_STORAGE_LOCKED)
 			if(locked)
 				icon_state = icon_locked
-                inhand_icon_state = icon_locked
+				inhand_icon_state = icon_locked
 				to_chat(user, "<span class='danger'>You lock the [src.name]!</span>")
 				SEND_SIGNAL(src, COMSIG_TRY_STORAGE_HIDE_ALL)
 				return
 			else
 				icon_state = icon_closed
-                inhand_icon_state = icon_closed
+				inhand_icon_state = icon_closed
 				to_chat(user, "<span class='danger'>You unlock the [src.name]!</span>")
 				return
 		else
@@ -55,7 +55,7 @@
 		SEND_SIGNAL(src, COMSIG_TRY_STORAGE_SET_LOCKSTATE, FALSE)
 		desc += "It appears to be broken."
 		icon_state = src.icon_broken
-        inhand_icon_state = icon_broken
+		inhand_icon_state = icon_broken
 		if(user)
 			visible_message("<span class='warning'>\The [src] is broken by [user] with an electromagnetic card!</span>")
 			return
