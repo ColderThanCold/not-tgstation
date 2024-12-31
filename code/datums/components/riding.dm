@@ -35,18 +35,24 @@
 	var/atom/movable/AM = parent
 	restore_position(M)
 	unequip_buckle_inhands(M)
+	M.updating_glide_size = TRUE
 	if(del_on_unbuckle_all && !AM.has_buckled_mobs())
 		qdel(src)
 
 /datum/component/riding/proc/vehicle_mob_buckle(datum/source, mob/living/M, force = FALSE)
-	handle_vehicle_offsets()
+	SIGNAL_HANDLER
 
-/datum/component/riding/proc/handle_vehicle_layer()
+	var/atom/movable/movable_parent = parent
+	M.set_glide_size(movable_parent.glide_size)
+	M.updating_glide_size = FALSE
+	handle_vehicle_offsets(movable_parent.dir)
+
+/datum/component/riding/proc/handle_vehicle_layer(dir)
 	var/atom/movable/AM = parent
 	var/static/list/defaults = list(TEXT_NORTH = OBJ_LAYER, TEXT_SOUTH = ABOVE_MOB_LAYER, TEXT_EAST = ABOVE_MOB_LAYER, TEXT_WEST = ABOVE_MOB_LAYER)
-	. = defaults["[AM.dir]"]
-	if(directional_vehicle_layers["[AM.dir]"])
-		. = directional_vehicle_layers["[AM.dir]"]
+	. = defaults["[dir]"]
+	if(directional_vehicle_layers["[dir]"])
+		. = directional_vehicle_layers["[dir]"]
 	if(isnull(.))	//you can set it to null to not change it.
 		. = AM.layer
 	AM.layer = .
@@ -54,10 +60,17 @@
 /datum/component/riding/proc/set_vehicle_dir_layer(dir, layer)
 	directional_vehicle_layers["[dir]"] = layer
 
-/datum/component/riding/proc/vehicle_moved(datum/source)
-	var/atom/movable/AM = parent
-	for(var/i in AM.buckled_mobs)
-		ride_check(i)
+/datum/component/riding/proc/vehicle_moved(datum/source, dir)
+	SIGNAL_HANDLER
+
+	var/atom/movable/movable_parent = parent
+	if (isnull(dir))
+		dir = movable_parent.dir
+	movable_parent.set_glide_size(DELAY_TO_GLIDE_SIZE(vehicle_move_delay))
+	for (var/m in movable_parent.buckled_mobs)
+		ride_check(m)
+		var/mob/buckled_mob = m
+		buckled_mob.set_glide_size(movable_parent.glide_size)
 	handle_vehicle_offsets()
 	handle_vehicle_layer()
 
