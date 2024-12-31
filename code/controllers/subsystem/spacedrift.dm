@@ -48,6 +48,7 @@ SUBSYSTEM_DEF(spacedrift)
 		AM.inertia_moving = TRUE
 		step(AM, AM.inertia_dir)
 		AM.inertia_moving = FALSE
+		AM.set_glide_size(DELAY_TO_GLIDE_SIZE(AM.inertia_move_delay))
 		AM.inertia_next_move = world.time + AM.inertia_move_delay
 		if (AM.loc == old_loc)
 			AM.inertia_dir = 0
