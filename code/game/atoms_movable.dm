@@ -51,6 +51,11 @@
 	///Internal holder for emissive blocker object, do not use directly use blocks_emissive
 	var/atom/movable/emissive_blocker/em_block
 
+	///Lazylist to keep track on the sources of illumination.
+	var/list/affected_dynamic_lights
+	///Highest-intensity light affecting us, which determines our visibility.
+	var/affecting_dynamic_lumi = 0
+
 
 /atom/movable/Initialize(mapload)
 	. = ..()
@@ -61,6 +66,10 @@
 			render_target = ref(src)
 			em_block = new(src, render_target)
 			vis_contents += em_block
+	if(opacity)
+		AddElement(/datum/element/light_blocking)
+	if(light_system == MOVABLE_LIGHT)
+		AddComponent(/datum/component/overlay_lighting)
 
 /atom/movable/Destroy()
 	QDEL_NULL(em_block)
