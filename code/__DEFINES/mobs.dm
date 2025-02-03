@@ -327,6 +327,9 @@
 #define PULL_PRONE_SLOWDOWN 1.5
 #define HUMAN_CARRY_SLOWDOWN 0.35
 
+///Swarmer flags
+#define SWARMER_LIGHT_ON (1<<0)
+
 //Flags that control what things can spawn species (whitelist)
 //Badmin magic mirror
 #define MIRROR_BADMIN (1<<0)
